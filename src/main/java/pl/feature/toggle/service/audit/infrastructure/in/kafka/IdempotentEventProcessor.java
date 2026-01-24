@@ -2,6 +2,7 @@ package pl.feature.toggle.service.audit.infrastructure.in.kafka;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import pl.feature.toggle.service.audit.application.port.out.ProcessedEventRepository;
 import pl.feature.toggle.service.contracts.shared.EventProcessor;
 import pl.feature.toggle.service.contracts.shared.IntegrationEvent;
@@ -15,6 +16,7 @@ class IdempotentEventProcessor implements EventProcessor {
     private final ProcessedEventRepository processedEvents;
 
     @Override
+    @Transactional
     public <T extends IntegrationEvent> void process(T event, Consumer<T> action, Runnable afterSuccessAction) {
         logReceiveEvent(event);
 

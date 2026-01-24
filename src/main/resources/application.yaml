@@ -5,9 +5,12 @@ spring:
     bootstrap-servers: localhost:9092
     consumer:
       group-id: feature-toggle-audit
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/feature-toggle-audit
+  mongodb:
+    uri: mongodb://localhost:27017/feature-toggle-audit
+
+topics:
+  project-env-events: project-env-events
+  feature-toggle-events: feature-toggle-events
 
 server:
   port: 8083
