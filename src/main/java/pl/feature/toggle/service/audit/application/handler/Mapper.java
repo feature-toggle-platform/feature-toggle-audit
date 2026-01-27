@@ -10,7 +10,7 @@ import pl.feature.toggle.service.contracts.event.projects.EnvironmentCreated;
 import pl.feature.toggle.service.contracts.event.projects.ProjectCreated;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-final class AuditEntryFromEventMapper {
+final class Mapper {
 
     static AuditEntry buildAuditFor(EnvironmentCreated event) {
         var actor = AuditActor.build(event.metadata().actorId(), event.metadata().username());
@@ -57,6 +57,4 @@ final class AuditEntryFromEventMapper {
                 .map(it -> AuditChanges.build(it.field(), it.before(), it.after()))
                 .toList());
     }
-
-
 }
