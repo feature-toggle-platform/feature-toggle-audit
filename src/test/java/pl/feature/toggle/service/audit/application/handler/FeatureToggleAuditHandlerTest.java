@@ -54,7 +54,7 @@ class FeatureToggleAuditHandlerTest extends AbstractUnitTest {
         assertThat(auditEntry.type()).isEqualTo(AuditType.FEATURE_TOGGLE_CREATED);
         assertThat(auditEntry.context()).isEqualTo(AuditContext.forFeatureToggle(PROJECT_ID, ENVIRONMENT_ID, CORRELATION_ID));
         assertThat(auditEntry.target()).isEqualTo(AuditTarget.build(TargetType.FEATURE_TOGGLE, FEATURE_TOGGLE_ID));
-        assertThat(auditEntry.occurredAt()).isEqualTo(METADATA.occurredAt());
+        assertThat(auditEntry.time()).isEqualTo(AuditTime.from(METADATA.occurredAt()));
         assertThat(auditEntry.id()).isNotNull();
     }
 
@@ -86,7 +86,7 @@ class FeatureToggleAuditHandlerTest extends AbstractUnitTest {
         assertThat(auditEntry.type()).isEqualTo(AuditType.FEATURE_TOGGLE_UPDATED);
         assertThat(auditEntry.context()).isEqualTo(AuditContext.forFeatureToggle(PROJECT_ID, ENVIRONMENT_ID, CORRELATION_ID));
         assertThat(auditEntry.target()).isEqualTo(AuditTarget.build(TargetType.FEATURE_TOGGLE, FEATURE_TOGGLE_ID));
-        assertThat(auditEntry.occurredAt()).isEqualTo(METADATA.occurredAt());
+        assertThat(auditEntry.time()).isEqualTo(AuditTime.from(METADATA.occurredAt()));
         assertThat(auditEntry.id()).isNotNull();
     }
 
@@ -112,7 +112,7 @@ class FeatureToggleAuditHandlerTest extends AbstractUnitTest {
         assertThat(auditEntry.type()).isEqualTo(AuditType.FEATURE_TOGGLE_DELETED);
         assertThat(auditEntry.context()).isEqualTo(AuditContext.forFeatureToggle(PROJECT_ID, ENVIRONMENT_ID, CORRELATION_ID));
         assertThat(auditEntry.target()).isEqualTo(AuditTarget.build(TargetType.FEATURE_TOGGLE, FEATURE_TOGGLE_ID));
-        assertThat(auditEntry.occurredAt()).isEqualTo(METADATA.occurredAt());
+        assertThat(auditEntry.time()).isEqualTo(AuditTime.from(METADATA.occurredAt()));
         assertThat(auditEntry.id()).isNotNull();
     }
 

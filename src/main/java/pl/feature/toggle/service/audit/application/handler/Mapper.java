@@ -17,7 +17,8 @@ final class Mapper {
         var target = AuditTarget.build(TargetType.ENVIRONMENT, event.environmentId());
         var context = AuditContext.forEnvironment(event.projectId(), event.environmentId(), event.metadata().correlationId());
         var changes = AuditChanges.empty();
-        return AuditEntryBuilder.record(AuditType.ENVIRONMENT_CREATED, target, context, changes, actor, event.metadata().occurredAt());
+        var time = AuditTime.from(event.metadata().occurredAt());
+        return AuditEntryBuilder.record(AuditType.ENVIRONMENT_CREATED, target, context, changes, actor, time);
     }
 
     static AuditEntry buildAuditFor(ProjectCreated event) {
@@ -25,7 +26,8 @@ final class Mapper {
         var target = AuditTarget.build(TargetType.PROJECT, event.projectId());
         var context = AuditContext.forProject(event.projectId(), event.metadata().correlationId());
         var changes = AuditChanges.empty();
-        return AuditEntryBuilder.record(AuditType.PROJECT_CREATED, target, context, changes, actor, event.metadata().occurredAt());
+        var time = AuditTime.from(event.metadata().occurredAt());
+        return AuditEntryBuilder.record(AuditType.PROJECT_CREATED, target, context, changes, actor, time);
     }
 
     static AuditEntry buildAuditFor(FeatureToggleCreated event) {
@@ -33,7 +35,8 @@ final class Mapper {
         var target = AuditTarget.build(TargetType.FEATURE_TOGGLE, event.id());
         var context = AuditContext.forFeatureToggle(event.projectId(), event.environmentId(), event.metadata().correlationId());
         var changes = AuditChanges.empty();
-        return AuditEntryBuilder.record(AuditType.FEATURE_TOGGLE_CREATED, target, context, changes, actor, event.metadata().occurredAt());
+        var time = AuditTime.from(event.metadata().occurredAt());
+        return AuditEntryBuilder.record(AuditType.FEATURE_TOGGLE_CREATED, target, context, changes, actor, time);
     }
 
     static AuditEntry buildAuditFor(FeatureToggleDeleted event) {
@@ -41,7 +44,8 @@ final class Mapper {
         var actor = AuditActor.build(event.metadata().actorId(), event.metadata().username());
         var context = AuditContext.forFeatureToggle(event.projectId(), event.environmentId(), event.metadata().correlationId());
         var changes = AuditChanges.empty();
-        return AuditEntryBuilder.record(AuditType.FEATURE_TOGGLE_DELETED, target, context, changes, actor, event.metadata().occurredAt());
+        var time = AuditTime.from(event.metadata().occurredAt());
+        return AuditEntryBuilder.record(AuditType.FEATURE_TOGGLE_DELETED, target, context, changes, actor, time);
     }
 
     static AuditEntry buildAuditFor(FeatureToggleUpdated event) {
@@ -49,7 +53,8 @@ final class Mapper {
         var target = AuditTarget.build(TargetType.FEATURE_TOGGLE, event.id());
         var context = AuditContext.forFeatureToggle(event.projectId(), event.environmentId(), event.metadata().correlationId());
         var changes = buildChanges(event);
-        return AuditEntryBuilder.record(AuditType.FEATURE_TOGGLE_UPDATED, target, context, changes, actor, event.metadata().occurredAt());
+        var time = AuditTime.from(event.metadata().occurredAt());
+        return AuditEntryBuilder.record(AuditType.FEATURE_TOGGLE_UPDATED, target, context, changes, actor, time);
     }
 
     private static AuditChanges buildChanges(FeatureToggleUpdated event) {

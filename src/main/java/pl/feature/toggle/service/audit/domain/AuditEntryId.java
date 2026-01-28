@@ -9,4 +9,8 @@ public record AuditEntryId(
     public static AuditEntryId create() {
         return new AuditEntryId(UUID.randomUUID().toString());
     }
+
+    public static AuditEntryId of(String value){
+        return new AuditEntryId(value);
+    }
 }

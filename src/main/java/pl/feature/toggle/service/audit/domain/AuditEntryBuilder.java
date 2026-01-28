@@ -14,9 +14,9 @@ public final class AuditEntryBuilder {
             AuditContext context,
             AuditChanges changes,
             AuditActor actor,
-            LocalDateTime occurredAt
+            AuditTime time
     ) {
-        return new AuditEntry(AuditEntryId.create(), type, target, context, changes, actor, occurredAt);
+        return new AuditEntry(AuditEntryId.create(), type, target, context, changes, actor, time);
     }
 
 }

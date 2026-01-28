@@ -2,8 +2,7 @@ package pl.feature.toggle.service.audit.infrastructure.out.db.audit;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import pl.feature.toggle.service.audit.domain.AuditChanges;
-import pl.feature.toggle.service.audit.domain.AuditEntry;
+import pl.feature.toggle.service.audit.domain.*;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -24,13 +23,29 @@ final class Mapper {
                 entry.target().targetId(),
                 entry.actor().actorId(),
                 entry.actor().username(),
-                toInstantUtc(entry.occurredAt()),
+                entry.time().toInstant(),
                 toChangeDocs(entry.changes())
         );
     }
 
-    private static Instant toInstantUtc(LocalDateTime ldt) {
-        return ldt.toInstant(ZoneOffset.UTC);
+    static AuditEntry toDomain(AuditEntryDocument document) {
+        return new AuditEntry(
+                AuditEntryId.of(document.id()),
+                AuditType.valueOf(document.type()),
+                AuditTarget.build(TargetType.valueOf(document.targetType()), document.targetId()),
+                AuditContext.build(document.projectId(), document.environmentId(), document.correlationId()),
+                toAuditChanges(document.changes()),
+                AuditActor.build(document.actorId(), document.username()),
+                AuditTime.from(document.occurredAt())
+        );
+    }
+
+    private static AuditChanges toAuditChanges(List<AuditEntryDocument.ChangeDocument> changeDocs) {
+        return AuditChanges.of(
+                changeDocs.stream()
+                        .map(c -> AuditChanges.build(c.field(), c.before(), c.after()))
+                        .toList()
+        );
     }
 
     private static List<AuditEntryDocument.ChangeDocument> toChangeDocs(AuditChanges changes) {

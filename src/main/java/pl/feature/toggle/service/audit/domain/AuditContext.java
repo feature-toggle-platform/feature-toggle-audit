@@ -20,4 +20,8 @@ public record AuditContext(
         return new AuditContext(projectId, environmentId, correlationId);
     }
 
+    public static AuditContext build(UUID projectId, UUID environmentId, String correlationId) {
+        return new AuditContext(projectId, environmentId, correlationId);
+    }
+
 }

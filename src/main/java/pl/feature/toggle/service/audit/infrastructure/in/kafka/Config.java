@@ -4,6 +4,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -16,6 +17,9 @@ import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JacksonJsonDeserializer;
 import org.springframework.util.backoff.FixedBackOff;
+import pl.feature.toggle.service.audit.application.port.in.EnvironmentAuditUseCase;
+import pl.feature.toggle.service.audit.application.port.in.FeatureToggleAuditUseCase;
+import pl.feature.toggle.service.audit.application.port.in.ProjectAuditUseCase;
 import pl.feature.toggle.service.audit.application.port.out.ProcessedEventRepository;
 import pl.feature.toggle.service.contracts.shared.EventProcessor;
 import pl.feature.toggle.service.contracts.shared.IntegrationEvent;
@@ -29,6 +33,7 @@ import static org.apache.kafka.clients.producer.ProducerConfig.BOOTSTRAP_SERVERS
 import static org.springframework.kafka.listener.ContainerProperties.AckMode.MANUAL_IMMEDIATE;
 
 @Configuration("kafkaConfig")
+@ConditionalOnProperty(name = "spring.kafka.enabled", havingValue = "true", matchIfMissing = true)
 class Config {
 
     @Autowired
@@ -69,5 +74,15 @@ class Config {
     @Bean
     EventProcessor eventProcessor(ProcessedEventRepository repository) {
         return new IdempotentEventProcessor(repository);
+    }
+
+    @Bean
+    KafkaEventConsumer kafkaEventConsumer(
+            EventProcessor eventProcessor,
+            EnvironmentAuditUseCase environmentAuditUseCase,
+            ProjectAuditUseCase projectAuditUseCase,
+            FeatureToggleAuditUseCase featureToggleAuditUseCase
+    ) {
+        return new KafkaEventConsumer(eventProcessor, environmentAuditUseCase, projectAuditUseCase, featureToggleAuditUseCase);
     }
 }

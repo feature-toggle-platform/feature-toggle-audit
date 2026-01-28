@@ -2,6 +2,7 @@ package pl.feature.toggle.service.audit.infrastructure;
 
 import pl.feature.toggle.service.audit.application.port.out.AuditRepository;
 import pl.feature.toggle.service.audit.domain.AuditEntry;
+import pl.feature.toggle.service.audit.domain.AuditEntryId;
 import pl.feature.toggle.service.audit.domain.AuditTarget;
 
 import java.util.HashMap;
@@ -14,6 +15,12 @@ public class FakeAuditRepository implements AuditRepository {
     @Override
     public void save(AuditEntry auditEntry) {
         auditEntries.put(auditEntry.target(), auditEntry);
+    }
+
+    @Override
+    public AuditEntry findById(AuditEntryId auditEntryId) {
+        // not implemented
+        return null;
     }
 
     public AuditEntry getByAuditTarget(AuditTarget target) {

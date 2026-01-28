@@ -39,7 +39,7 @@ class ProjectAuditHandlerTest extends AbstractUnitTest {
         assertThat(auditEntry.type()).isEqualTo(AuditType.PROJECT_CREATED);
         assertThat(auditEntry.context()).isEqualTo(AuditContext.forProject(PROJECT_ID, CORRELATION_ID));
         assertThat(auditEntry.target()).isEqualTo(AuditTarget.build(TargetType.PROJECT, PROJECT_ID));
-        assertThat(auditEntry.occurredAt()).isEqualTo(METADATA.occurredAt());
+        assertThat(auditEntry.time()).isEqualTo(AuditTime.from(METADATA.occurredAt()));
         assertThat(auditEntry.id()).isNotNull();
     }
 

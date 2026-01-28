@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-interface SpringDataAuditEntryMongoRepository extends MongoRepository<AuditEntryDocument, UUID> {
+interface SpringDataAuditEntryMongoRepository extends MongoRepository<AuditEntryDocument, String> {
 }

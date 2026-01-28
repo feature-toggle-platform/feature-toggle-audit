@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.audit.AbstractUnitTest;
 import pl.feature.toggle.service.audit.application.port.in.EnvironmentAuditUseCase;
 import pl.feature.toggle.service.audit.domain.*;
-import pl.feature.toggle.service.contracts.event.projects.EnvironmentCreated;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.feature.toggle.service.contracts.event.projects.EnvironmentCreated.environmentCreatedEventBuilder;
@@ -42,7 +41,7 @@ class EnvironmentAuditHandlerTest extends AbstractUnitTest {
         assertThat(auditEntry.type()).isEqualTo(AuditType.ENVIRONMENT_CREATED);
         assertThat(auditEntry.context()).isEqualTo(AuditContext.forEnvironment(PROJECT_ID, ENVIRONMENT_ID, CORRELATION_ID));
         assertThat(auditEntry.target()).isEqualTo(AuditTarget.build(TargetType.ENVIRONMENT, ENVIRONMENT_ID));
-        assertThat(auditEntry.occurredAt()).isEqualTo(METADATA.occurredAt());
+        assertThat(auditEntry.time()).isEqualTo(AuditTime.from(METADATA.occurredAt()));
         assertThat(auditEntry.id()).isNotNull();
     }
 

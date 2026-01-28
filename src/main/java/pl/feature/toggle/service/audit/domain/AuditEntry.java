@@ -1,7 +1,5 @@
 package pl.feature.toggle.service.audit.domain;
 
-import java.time.LocalDateTime;
-
 public record AuditEntry(
         AuditEntryId id,
         AuditType type,
@@ -9,7 +7,7 @@ public record AuditEntry(
         AuditContext context,
         AuditChanges changes,
         AuditActor actor,
-        LocalDateTime occurredAt
+        AuditTime time
 ) {
 }
 

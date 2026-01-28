@@ -5,6 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import pl.feature.toggle.service.audit.domain.AuditChanges.AuditChange;
 import pl.feature.toggle.service.audit.domain.AuditEntry;
+import pl.feature.toggle.service.audit.domain.AuditTime;
 import pl.feature.toggle.service.audit.domain.AuditType;
 import pl.feature.toggle.service.audit.domain.TargetType;
 import pl.feature.toggle.service.contracts.shared.Changes;
@@ -31,7 +32,7 @@ class MapperTest {
         var actorId = UUID.randomUUID();
         var username = "admin";
         var correlationId = "111111";
-        var occurredAt = LocalDateTime.now().truncatedTo(SECONDS);
+        var time = AuditTime.from(LocalDateTime.now());
 
         var projectId = UUID.randomUUID();
         var environmentId = UUID.randomUUID();
@@ -41,8 +42,8 @@ class MapperTest {
                 .id(featureToggleId)
                 .projectId(projectId)
                 .environmentId(environmentId)
-                .createdAt(occurredAt)
-                .updatedAt(occurredAt)
+                .createdAt(time.occurredAt())
+                .updatedAt(time.occurredAt())
                 .type("BOOLEAN")
                 .value("true")
                 .name("TEST")
@@ -84,7 +85,7 @@ class MapperTest {
         assertThat(audit.context().environmentId()).isEqualTo(c.environmentId);
         assertThat(audit.context().correlationId()).isEqualTo(c.correlationId);
 
-        assertThat(audit.occurredAt()).isEqualTo(c.occurredAt);
+        assertThat(audit.time()).isEqualTo(c.time);
 
         assertThat(audit.changes().changes()).isEmpty();
     }
@@ -93,7 +94,7 @@ class MapperTest {
         var actorId = UUID.randomUUID();
         var username = "admin";
         var correlationId = "111111";
-        var occurredAt = LocalDateTime.now().truncatedTo(SECONDS);
+        var occurredAt = AuditTime.from(LocalDateTime.now());
 
         var projectId = UUID.randomUUID();
         var environmentId = UUID.randomUUID();
@@ -119,10 +120,10 @@ class MapperTest {
             UUID projectId,
             UUID environmentId,
             String correlationId,
-            LocalDateTime occurredAt
+            AuditTime time
     ) {
 
-        static Case environmentCreated(UUID actorId, String username, String correlationId, LocalDateTime occurredAt,
+        static Case environmentCreated(UUID actorId, String username, String correlationId, AuditTime time,
                                        UUID projectId, UUID environmentId, Metadata metadata) {
             var event = environmentCreatedEventBuilder()
                     .projectId(projectId)
@@ -140,11 +141,11 @@ class MapperTest {
                     projectId,
                     environmentId,
                     correlationId,
-                    occurredAt
+                    time
             );
         }
 
-        static Case projectCreated(UUID actorId, String username, String correlationId, LocalDateTime occurredAt,
+        static Case projectCreated(UUID actorId, String username, String correlationId, AuditTime time,
                                    UUID projectId, Metadata metadata) {
             var event = projectCreatedEventBuilder()
                     .projectId(projectId)
@@ -161,18 +162,18 @@ class MapperTest {
                     projectId,
                     null,
                     correlationId,
-                    occurredAt
+                    time
             );
         }
 
-        static Case featureToggleCreated(UUID actorId, String username, String correlationId, LocalDateTime occurredAt,
+        static Case featureToggleCreated(UUID actorId, String username, String correlationId, AuditTime time,
                                          UUID projectId, UUID environmentId, UUID featureToggleId, Metadata metadata) {
             var event = featureToggleCreatedEventBuilder()
                     .id(featureToggleId)
                     .projectId(projectId)
                     .environmentId(environmentId)
-                    .createdAt(occurredAt)
-                    .updatedAt(occurredAt)
+                    .createdAt(time.occurredAt())
+                    .updatedAt(time.occurredAt())
                     .type("BOOLEAN")
                     .value("true")
                     .name("TEST")
@@ -190,11 +191,11 @@ class MapperTest {
                     projectId,
                     environmentId,
                     correlationId,
-                    occurredAt
+                    time
             );
         }
 
-        static Case featureToggleDeleted(UUID actorId, String username, String correlationId, LocalDateTime occurredAt,
+        static Case featureToggleDeleted(UUID actorId, String username, String correlationId, AuditTime time,
                                          UUID projectId, UUID environmentId, UUID featureToggleId, Metadata metadata) {
             var event = featureToggleDeletedEventBuilder()
                     .id(featureToggleId)
@@ -213,7 +214,7 @@ class MapperTest {
                     projectId,
                     environmentId,
                     correlationId,
-                    occurredAt
+                    time
             );
         }
     }
