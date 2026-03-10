@@ -35,7 +35,7 @@ final class AuditBuilder {
         var target = buildEnvironmentTarget(event.environmentId());
         var actor = buildActor(event.metadata());
         var context = AuditContext.forEnvironment(event.projectId(), event.environmentId(), event.metadata().correlationId());
-        var changes = AuditChanges.empty();
+        var changes = buildChanges(event.changes());
         var time = AuditTime.from(event.metadata().occurredAt());
         return AuditEntry.build(AuditType.ENVIRONMENT_STATUS_CHANGED, target, context, changes, actor, time);
     }
@@ -44,7 +44,7 @@ final class AuditBuilder {
         var actor = buildActor(event.metadata());
         var context = AuditContext.forEnvironment(event.projectId(), event.environmentId(), event.metadata().correlationId());
         var target = buildEnvironmentTarget(event.environmentId());
-        var changes = AuditChanges.empty();
+        var changes = buildChanges(event.changes());
         var time = AuditTime.from(event.metadata().occurredAt());
         return AuditEntry.build(AuditType.ENVIRONMENT_TYPE_CHANGED, target, context, changes, actor, time);
     }
@@ -52,7 +52,7 @@ final class AuditBuilder {
     static AuditEntry buildAuditFor(EnvironmentUpdated event) {
         var actor = buildActor(event.metadata());
         var target = buildEnvironmentTarget(event.environmentId());
-        var changes = AuditChanges.empty();
+        var changes = buildChanges(event.changes());
         var context = AuditContext.forEnvironment(event.projectId(), event.environmentId(), event.metadata().correlationId());
         var time = AuditTime.from(event.metadata().occurredAt());
         return AuditEntry.build(AuditType.ENVIRONMENT_UPDATED, target, context, changes, actor, time);
