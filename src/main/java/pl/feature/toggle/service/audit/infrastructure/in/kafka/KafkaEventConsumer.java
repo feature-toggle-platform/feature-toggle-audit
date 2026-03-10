@@ -5,16 +5,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
-import pl.feature.toggle.service.audit.application.port.in.EnvironmentAuditUseCase;
-import pl.feature.toggle.service.audit.application.port.in.FeatureToggleAuditUseCase;
-import pl.feature.toggle.service.audit.application.port.in.ProjectAuditUseCase;
-import pl.feature.toggle.service.audit.application.port.out.ProcessedEventRepository;
+import pl.feature.toggle.service.audit.application.port.in.AuditUseCase;
+import pl.feature.toggle.service.contracts.event.environment.EnvironmentCreated;
+import pl.feature.toggle.service.contracts.event.environment.EnvironmentStatusChanged;
+import pl.feature.toggle.service.contracts.event.environment.EnvironmentTypeChanged;
+import pl.feature.toggle.service.contracts.event.environment.EnvironmentUpdated;
 import pl.feature.toggle.service.contracts.event.featuretoggle.FeatureToggleCreated;
-import pl.feature.toggle.service.contracts.event.featuretoggle.FeatureToggleDeleted;
+import pl.feature.toggle.service.contracts.event.featuretoggle.FeatureToggleStatusChanged;
 import pl.feature.toggle.service.contracts.event.featuretoggle.FeatureToggleUpdated;
-import pl.feature.toggle.service.contracts.event.projects.EnvironmentCreated;
-import pl.feature.toggle.service.contracts.event.projects.ProjectCreated;
-import pl.feature.toggle.service.contracts.shared.EventProcessor;
+import pl.feature.toggle.service.contracts.event.featuretoggle.FeatureToggleValueChanged;
+import pl.feature.toggle.service.contracts.event.project.ProjectCreated;
+import pl.feature.toggle.service.contracts.event.project.ProjectStatusChanged;
+import pl.feature.toggle.service.contracts.event.project.ProjectUpdated;
+import pl.feature.toggle.service.event.processing.api.EventProcessor;
 
 @Slf4j
 @AllArgsConstructor
@@ -22,15 +25,13 @@ import pl.feature.toggle.service.contracts.shared.EventProcessor;
 class KafkaEventConsumer {
 
     private final EventProcessor eventProcessor;
-    private final EnvironmentAuditUseCase environmentAuditUseCase;
-    private final ProjectAuditUseCase projectAuditUseCase;
-    private final FeatureToggleAuditUseCase featureToggleAuditUseCase;
+    private final AuditUseCase auditUseCase;
 
     @KafkaHandler
     void handle(FeatureToggleCreated event, Acknowledgment acknowledgment) {
         eventProcessor.process(
                 event,
-                featureToggleAuditUseCase::handle,
+                auditUseCase::handle,
                 acknowledgment::acknowledge
         );
     }
@@ -39,16 +40,25 @@ class KafkaEventConsumer {
     void handle(FeatureToggleUpdated event, Acknowledgment acknowledgment) {
         eventProcessor.process(
                 event,
-                featureToggleAuditUseCase::handle,
+                auditUseCase::handle,
                 acknowledgment::acknowledge
         );
     }
 
     @KafkaHandler
-    void handle(FeatureToggleDeleted event, Acknowledgment acknowledgment) {
+    void handle(FeatureToggleStatusChanged event, Acknowledgment acknowledgment) {
         eventProcessor.process(
                 event,
-                featureToggleAuditUseCase::handle,
+                auditUseCase::handle,
+                acknowledgment::acknowledge
+        );
+    }
+
+    @KafkaHandler
+    void handle(FeatureToggleValueChanged event, Acknowledgment acknowledgment) {
+        eventProcessor.process(
+                event,
+                auditUseCase::handle,
                 acknowledgment::acknowledge
         );
     }
@@ -57,7 +67,26 @@ class KafkaEventConsumer {
     void handle(ProjectCreated event, Acknowledgment acknowledgment) {
         eventProcessor.process(
                 event,
-                projectAuditUseCase::handle,
+                auditUseCase::handle,
+                acknowledgment::acknowledge
+        );
+    }
+
+    @KafkaHandler
+    void handle(ProjectStatusChanged event, Acknowledgment acknowledgment) {
+        eventProcessor.process(
+                event,
+                auditUseCase::handle,
+                acknowledgment::acknowledge
+        );
+    }
+
+
+    @KafkaHandler
+    void handle(ProjectUpdated event, Acknowledgment acknowledgment) {
+        eventProcessor.process(
+                event,
+                auditUseCase::handle,
                 acknowledgment::acknowledge
         );
     }
@@ -66,7 +95,34 @@ class KafkaEventConsumer {
     void handle(EnvironmentCreated event, Acknowledgment acknowledgment) {
         eventProcessor.process(
                 event,
-                environmentAuditUseCase::handle,
+                auditUseCase::handle,
+                acknowledgment::acknowledge
+        );
+    }
+
+    @KafkaHandler
+    void handle(EnvironmentUpdated event, Acknowledgment acknowledgment) {
+        eventProcessor.process(
+                event,
+                auditUseCase::handle,
+                acknowledgment::acknowledge
+        );
+    }
+
+    @KafkaHandler
+    void handle(EnvironmentStatusChanged event, Acknowledgment acknowledgment) {
+        eventProcessor.process(
+                event,
+                auditUseCase::handle,
+                acknowledgment::acknowledge
+        );
+    }
+
+    @KafkaHandler
+    void handle(EnvironmentTypeChanged event, Acknowledgment acknowledgment) {
+        eventProcessor.process(
+                event,
+                auditUseCase::handle,
                 acknowledgment::acknowledge
         );
     }

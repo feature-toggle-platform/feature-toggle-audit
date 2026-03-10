@@ -4,9 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.audit.AbstractUnitTest;
-import pl.feature.toggle.service.audit.application.port.in.EnvironmentAuditUseCase;
-import pl.feature.toggle.service.audit.application.port.in.FeatureToggleAuditUseCase;
-import pl.feature.toggle.service.audit.application.port.in.ProjectAuditUseCase;
+import pl.feature.toggle.service.audit.application.port.in.AuditUseCase;
 import pl.feature.toggle.service.contracts.shared.EventProcessor;
 
 import java.util.UUID;
@@ -18,8 +16,8 @@ import static org.mockito.Mockito.verify;
 import static pl.feature.toggle.service.contracts.event.featuretoggle.FeatureToggleCreated.featureToggleCreatedEventBuilder;
 import static pl.feature.toggle.service.contracts.event.featuretoggle.FeatureToggleDeleted.featureToggleDeletedEventBuilder;
 import static pl.feature.toggle.service.contracts.event.featuretoggle.FeatureToggleUpdated.featureToggleUpdatedEventBuilder;
-import static pl.feature.toggle.service.contracts.event.projects.EnvironmentCreated.environmentCreatedEventBuilder;
-import static pl.feature.toggle.service.contracts.event.projects.ProjectCreated.projectCreatedEventBuilder;
+import static pl.feature.toggle.service.contracts.event.environment.EnvironmentCreated.environmentCreatedEventBuilder;
+import static pl.feature.toggle.service.contracts.event.project.ProjectCreated.projectCreatedEventBuilder;
 
 class KafkaEventConsumerTest extends AbstractUnitTest {
 
@@ -30,7 +28,7 @@ class KafkaEventConsumerTest extends AbstractUnitTest {
     void setUp() {
         var environmentAuditUseCase = mock(EnvironmentAuditUseCase.class);
         var projectAuditUseCase = mock(ProjectAuditUseCase.class);
-        var featureToggleAuditUseCase = mock(FeatureToggleAuditUseCase.class);
+        var featureToggleAuditUseCase = mock(AuditUseCase.class);
         eventProcessor = mock(IdempotentEventProcessor.class);
         sut = new KafkaEventConsumer(eventProcessor, environmentAuditUseCase, projectAuditUseCase, featureToggleAuditUseCase);
     }

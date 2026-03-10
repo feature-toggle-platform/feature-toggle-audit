@@ -1,6 +1,5 @@
 package pl.feature.toggle.service.audit.infrastructure;
 
-import pl.feature.toggle.service.audit.application.port.out.ProcessedEventRepository;
 import pl.feature.toggle.service.contracts.shared.EventId;
 
 import java.util.HashSet;

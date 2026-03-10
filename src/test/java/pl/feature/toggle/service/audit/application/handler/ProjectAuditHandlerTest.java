@@ -7,7 +7,7 @@ import pl.feature.toggle.service.audit.AbstractUnitTest;
 import pl.feature.toggle.service.audit.domain.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pl.feature.toggle.service.contracts.event.projects.ProjectCreated.projectCreatedEventBuilder;
+import static pl.feature.toggle.service.contracts.event.project.ProjectCreated.projectCreatedEventBuilder;
 
 class ProjectAuditHandlerTest extends AbstractUnitTest {
 

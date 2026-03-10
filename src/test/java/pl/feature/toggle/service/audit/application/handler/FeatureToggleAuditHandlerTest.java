@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.audit.AbstractUnitTest;
-import pl.feature.toggle.service.audit.application.port.in.FeatureToggleAuditUseCase;
+import pl.feature.toggle.service.audit.application.port.in.AuditUseCase;
 import pl.feature.toggle.service.audit.domain.*;
 import pl.feature.toggle.service.contracts.shared.Changes;
 
@@ -20,11 +20,11 @@ import static pl.feature.toggle.service.contracts.shared.Changes.buildChange;
 
 class FeatureToggleAuditHandlerTest extends AbstractUnitTest {
 
-    private FeatureToggleAuditUseCase sut;
+    private AuditUseCase sut;
 
     @BeforeEach
     void setUp() {
-        sut = new FeatureToggleAuditHandler(auditRepository);
+        sut = new AuditUseCaseHandler(auditRepository);
     }
 
     @Test

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.feature.toggle.service.audit.AbstractITTest;
-import pl.feature.toggle.service.audit.application.port.out.ProcessedEventRepository;
 import pl.feature.toggle.service.contracts.shared.EventId;
 
 import static org.assertj.core.api.Assertions.assertThat;

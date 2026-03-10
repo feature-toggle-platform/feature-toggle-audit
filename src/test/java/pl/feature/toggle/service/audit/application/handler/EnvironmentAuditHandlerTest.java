@@ -4,11 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.audit.AbstractUnitTest;
-import pl.feature.toggle.service.audit.application.port.in.EnvironmentAuditUseCase;
 import pl.feature.toggle.service.audit.domain.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pl.feature.toggle.service.contracts.event.projects.EnvironmentCreated.environmentCreatedEventBuilder;
+import static pl.feature.toggle.service.contracts.event.environment.EnvironmentCreated.environmentCreatedEventBuilder;
 
 class EnvironmentAuditHandlerTest extends AbstractUnitTest {
 

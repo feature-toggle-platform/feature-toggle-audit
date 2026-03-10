@@ -16,13 +16,12 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.feature.toggle.service.contracts.event.featuretoggle.FeatureToggleCreated.featureToggleCreatedEventBuilder;
 import static pl.feature.toggle.service.contracts.event.featuretoggle.FeatureToggleDeleted.featureToggleDeletedEventBuilder;
 import static pl.feature.toggle.service.contracts.event.featuretoggle.FeatureToggleUpdated.featureToggleUpdatedEventBuilder;
-import static pl.feature.toggle.service.contracts.event.projects.EnvironmentCreated.environmentCreatedEventBuilder;
-import static pl.feature.toggle.service.contracts.event.projects.ProjectCreated.projectCreatedEventBuilder;
+import static pl.feature.toggle.service.contracts.event.environment.EnvironmentCreated.environmentCreatedEventBuilder;
+import static pl.feature.toggle.service.contracts.event.project.ProjectCreated.projectCreatedEventBuilder;
 import static pl.feature.toggle.service.contracts.shared.Changes.buildChange;
 
 class MapperTest {
@@ -55,7 +54,7 @@ class MapperTest {
                 .build();
 
         // when
-        var audit = Mapper.buildAuditFor(event);
+        var audit = AuditBuilder.buildAuditFor(event);
 
         // then
         assertThat(audit.type()).isEqualTo(AuditType.FEATURE_TOGGLE_UPDATED);
@@ -132,7 +131,7 @@ class MapperTest {
                     .build();
 
             return new Case(
-                    () -> Mapper.buildAuditFor(event),
+                    () -> AuditBuilder.buildAuditFor(event),
                     AuditType.ENVIRONMENT_CREATED,
                     TargetType.ENVIRONMENT,
                     environmentId,
@@ -153,7 +152,7 @@ class MapperTest {
                     .build();
 
             return new Case(
-                    () -> Mapper.buildAuditFor(event),
+                    () -> AuditBuilder.buildAuditFor(event),
                     AuditType.PROJECT_CREATED,
                     TargetType.PROJECT,
                     projectId,
@@ -182,7 +181,7 @@ class MapperTest {
                     .build();
 
             return new Case(
-                    () -> Mapper.buildAuditFor(event),
+                    () -> AuditBuilder.buildAuditFor(event),
                     AuditType.FEATURE_TOGGLE_CREATED,
                     TargetType.FEATURE_TOGGLE,
                     featureToggleId,
@@ -205,7 +204,7 @@ class MapperTest {
                     .build();
 
             return new Case(
-                    () -> Mapper.buildAuditFor(event),
+                    () -> AuditBuilder.buildAuditFor(event),
                     AuditType.FEATURE_TOGGLE_DELETED,
                     TargetType.FEATURE_TOGGLE,
                     featureToggleId,

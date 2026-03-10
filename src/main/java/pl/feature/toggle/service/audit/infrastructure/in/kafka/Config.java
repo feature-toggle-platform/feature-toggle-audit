@@ -1,5 +1,6 @@
 package pl.feature.toggle.service.audit.infrastructure.in.kafka;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -17,12 +18,9 @@ import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JacksonJsonDeserializer;
 import org.springframework.util.backoff.FixedBackOff;
-import pl.feature.toggle.service.audit.application.port.in.EnvironmentAuditUseCase;
-import pl.feature.toggle.service.audit.application.port.in.FeatureToggleAuditUseCase;
-import pl.feature.toggle.service.audit.application.port.in.ProjectAuditUseCase;
-import pl.feature.toggle.service.audit.application.port.out.ProcessedEventRepository;
-import pl.feature.toggle.service.contracts.shared.EventProcessor;
+import pl.feature.toggle.service.audit.application.port.in.AuditUseCase;
 import pl.feature.toggle.service.contracts.shared.IntegrationEvent;
+import pl.feature.toggle.service.event.processing.api.EventProcessor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +32,7 @@ import static org.springframework.kafka.listener.ContainerProperties.AckMode.MAN
 
 @Configuration("kafkaConfig")
 @ConditionalOnProperty(name = "spring.kafka.enabled", havingValue = "true", matchIfMissing = true)
+@Slf4j
 class Config {
 
     @Autowired
@@ -66,23 +65,21 @@ class Config {
                 (record, ex) -> new TopicPartition(record.topic() + ".DLT", record.partition()));
         var backOff = new FixedBackOff(5000, 3);
         var errorHandler = new DefaultErrorHandler(recoverer, backOff);
+        errorHandler.setRetryListeners((record, ex, deliveryAttempt) -> {
+            log.error(
+                    "Kafka processing failed. attempt={} topic={} partition={} offset={} key={}",
+                    deliveryAttempt,
+                    record.topic(), record.partition(), record.offset(), record.key(),
+                    ex
+            );
+        });
         factory.setCommonErrorHandler(errorHandler);
 
         return factory;
     }
 
     @Bean
-    EventProcessor eventProcessor(ProcessedEventRepository repository) {
-        return new IdempotentEventProcessor(repository);
-    }
-
-    @Bean
-    KafkaEventConsumer kafkaEventConsumer(
-            EventProcessor eventProcessor,
-            EnvironmentAuditUseCase environmentAuditUseCase,
-            ProjectAuditUseCase projectAuditUseCase,
-            FeatureToggleAuditUseCase featureToggleAuditUseCase
-    ) {
-        return new KafkaEventConsumer(eventProcessor, environmentAuditUseCase, projectAuditUseCase, featureToggleAuditUseCase);
+    KafkaEventConsumer kafkaEventConsumer(EventProcessor eventProcessor, AuditUseCase auditUseCase) {
+        return new KafkaEventConsumer(eventProcessor, auditUseCase);
     }
 }
