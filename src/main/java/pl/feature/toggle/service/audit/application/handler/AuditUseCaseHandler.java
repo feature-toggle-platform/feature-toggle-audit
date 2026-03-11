@@ -2,7 +2,7 @@ package pl.feature.toggle.service.audit.application.handler;
 
 import lombok.AllArgsConstructor;
 import pl.feature.toggle.service.audit.application.port.in.AuditUseCase;
-import pl.feature.toggle.service.audit.application.port.out.AuditRepository;
+import pl.feature.toggle.service.audit.application.port.out.AuditCommandRepository;
 import pl.feature.toggle.service.contracts.event.environment.EnvironmentCreated;
 import pl.feature.toggle.service.contracts.event.environment.EnvironmentStatusChanged;
 import pl.feature.toggle.service.contracts.event.environment.EnvironmentTypeChanged;
@@ -20,71 +20,71 @@ import static pl.feature.toggle.service.audit.application.handler.AuditBuilder.b
 @AllArgsConstructor
 class AuditUseCaseHandler implements AuditUseCase {
 
-    private final AuditRepository auditRepository;
+    private final AuditCommandRepository auditCommandRepository;
 
     @Override
     public void handle(FeatureToggleCreated event) {
         var audit = buildAuditFor(event);
-        auditRepository.save(audit);
+        auditCommandRepository.save(audit);
     }
 
     @Override
     public void handle(FeatureToggleUpdated event) {
         var audit = buildAuditFor(event);
-        auditRepository.save(audit);
+        auditCommandRepository.save(audit);
     }
 
     @Override
     public void handle(FeatureToggleStatusChanged event) {
         var audit = buildAuditFor(event);
-        auditRepository.save(audit);
+        auditCommandRepository.save(audit);
     }
 
     @Override
     public void handle(FeatureToggleValueChanged event) {
         var audit = buildAuditFor(event);
-        auditRepository.save(audit);
+        auditCommandRepository.save(audit);
     }
 
     @Override
     public void handle(ProjectCreated event) {
         var audit = buildAuditFor(event);
-        auditRepository.save(audit);
+        auditCommandRepository.save(audit);
     }
 
     @Override
     public void handle(ProjectStatusChanged event) {
         var audit = buildAuditFor(event);
-        auditRepository.save(audit);
+        auditCommandRepository.save(audit);
     }
 
     @Override
     public void handle(ProjectUpdated event) {
         var audit = buildAuditFor(event);
-        auditRepository.save(audit);
+        auditCommandRepository.save(audit);
     }
 
     @Override
     public void handle(EnvironmentCreated event) {
         var audit = buildAuditFor(event);
-        auditRepository.save(audit);
+        auditCommandRepository.save(audit);
     }
 
     @Override
     public void handle(EnvironmentUpdated event) {
         var audit = buildAuditFor(event);
-        auditRepository.save(audit);
+        auditCommandRepository.save(audit);
     }
 
     @Override
     public void handle(EnvironmentStatusChanged event) {
         var audit = buildAuditFor(event);
-        auditRepository.save(audit);
+        auditCommandRepository.save(audit);
     }
 
     @Override
     public void handle(EnvironmentTypeChanged event) {
         var audit = buildAuditFor(event);
-        auditRepository.save(audit);
+        auditCommandRepository.save(audit);
     }
 }

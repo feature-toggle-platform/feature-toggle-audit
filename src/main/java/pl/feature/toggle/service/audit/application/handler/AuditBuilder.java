@@ -82,7 +82,7 @@ final class AuditBuilder {
         var context = AuditContext.forProject(event.projectId(), event.metadata().correlationId());
         var changes = buildChanges(event.changes());
         var time = AuditTime.from(event.metadata().occurredAt());
-        return AuditEntry.build(AuditType.PROJECT_UPDATED, target, context, changes, actor, time);
+        return AuditEntry.build(AuditType.PROJECT_STATUS_CHANGED, target, context, changes, actor, time);
     }
 
     static AuditEntry buildAuditFor(FeatureToggleCreated event) {
