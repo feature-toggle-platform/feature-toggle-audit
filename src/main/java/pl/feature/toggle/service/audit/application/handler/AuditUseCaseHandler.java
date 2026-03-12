@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.audit.application.handler;
 
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import pl.feature.toggle.service.audit.application.port.in.AuditUseCase;
 import pl.feature.toggle.service.audit.application.port.out.AuditCommandRepository;
 import pl.feature.toggle.service.contracts.event.environment.EnvironmentCreated;
@@ -23,66 +24,77 @@ class AuditUseCaseHandler implements AuditUseCase {
     private final AuditCommandRepository auditCommandRepository;
 
     @Override
+    @Transactional
     public void handle(FeatureToggleCreated event) {
         var audit = buildAuditFor(event);
         auditCommandRepository.save(audit);
     }
 
     @Override
+    @Transactional
     public void handle(FeatureToggleUpdated event) {
         var audit = buildAuditFor(event);
         auditCommandRepository.save(audit);
     }
 
     @Override
+    @Transactional
     public void handle(FeatureToggleStatusChanged event) {
         var audit = buildAuditFor(event);
         auditCommandRepository.save(audit);
     }
 
     @Override
+    @Transactional
     public void handle(FeatureToggleValueChanged event) {
         var audit = buildAuditFor(event);
         auditCommandRepository.save(audit);
     }
 
     @Override
+    @Transactional
     public void handle(ProjectCreated event) {
         var audit = buildAuditFor(event);
         auditCommandRepository.save(audit);
     }
 
     @Override
+    @Transactional
     public void handle(ProjectStatusChanged event) {
         var audit = buildAuditFor(event);
         auditCommandRepository.save(audit);
     }
 
     @Override
+    @Transactional
     public void handle(ProjectUpdated event) {
         var audit = buildAuditFor(event);
         auditCommandRepository.save(audit);
     }
 
     @Override
+    @Transactional
     public void handle(EnvironmentCreated event) {
         var audit = buildAuditFor(event);
         auditCommandRepository.save(audit);
     }
 
     @Override
+    @Transactional
     public void handle(EnvironmentUpdated event) {
         var audit = buildAuditFor(event);
         auditCommandRepository.save(audit);
     }
 
     @Override
+    @Transactional
     public void handle(EnvironmentStatusChanged event) {
         var audit = buildAuditFor(event);
         auditCommandRepository.save(audit);
     }
 
     @Override
+    @Transactional
     public void handle(EnvironmentTypeChanged event) {
         var audit = buildAuditFor(event);
         auditCommandRepository.save(audit);

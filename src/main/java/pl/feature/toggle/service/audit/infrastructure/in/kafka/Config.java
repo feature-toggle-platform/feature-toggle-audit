@@ -52,11 +52,11 @@ class Config {
     }
 
     @Bean
-    ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
-            ConsumerFactory<String, Object> consumerFactory,
+    ConcurrentKafkaListenerContainerFactory<String, IntegrationEvent> kafkaListenerContainerFactory(
+            ConsumerFactory<String, IntegrationEvent> consumerFactory,
             KafkaTemplate<String, Object> kafkaTemplate
     ) {
-        var factory = new ConcurrentKafkaListenerContainerFactory<String, Object>();
+        var factory = new ConcurrentKafkaListenerContainerFactory<String, IntegrationEvent>();
         factory.setConsumerFactory(consumerFactory);
         factory.getContainerProperties()
                 .setAckMode(MANUAL_IMMEDIATE);

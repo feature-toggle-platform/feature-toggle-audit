@@ -199,4 +199,15 @@ public class TestAuditData {
         );
     }
 
+    public static AuditEntry randomAuditEntry(UUID targetId) {
+        return AuditEntry.build(
+                AuditType.PROJECT_CREATED,
+                AuditTarget.build(TargetType.PROJECT, targetId),
+                AuditContext.forProject(UUID.randomUUID(), UUID.randomUUID().toString()),
+                AuditChanges.empty(),
+                AuditActor.build(UUID.randomUUID().toString(), "admin"),
+                AuditTime.from(Instant.now())
+        );
+    }
+
 }

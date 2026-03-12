@@ -6,11 +6,11 @@ spring:
     consumer:
       group-id: feature-toggle-audit
   mongodb:
-    uri: mongodb://localhost:27017/feature-toggle-audit
+    uri: mongodb://localhost:27017/feature-toggle-audit?uuidRepresentation=standard
 
 topics:
-  project-env-events: project-env-events
   feature-toggle-events: feature-toggle-events
+  feature-toggle-configuration-events: feature-toggle-configuration-events
 
 server:
-  port: 8083
+  port: 8084

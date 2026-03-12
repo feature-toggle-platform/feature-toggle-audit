@@ -21,7 +21,7 @@ import pl.feature.toggle.service.event.processing.api.EventProcessor;
 
 @Slf4j
 @AllArgsConstructor
-@KafkaListener(topics = {"${topics.project-env-events}", "${topics.feature-toggle-events}"})
+@KafkaListener(topics = {"${topics.feature-toggle-configuration-events}", "${topics.feature-toggle-events}"})
 class KafkaEventConsumer {
 
     private final EventProcessor eventProcessor;

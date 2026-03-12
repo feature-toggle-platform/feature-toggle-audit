@@ -8,6 +8,8 @@ import pl.feature.toggle.service.audit.application.port.out.AuditCommandReposito
 import pl.feature.toggle.service.audit.application.port.out.AuditQueryRepository;
 import pl.feature.toggle.service.audit.domain.AuditEntryId;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -37,6 +39,28 @@ class AuditQueryRepositoryIT extends AbstractITTest {
         assertThat(result.changes()).isEqualTo(auditEntry.changes());
         assertThat(result.actor()).isEqualTo(auditEntry.actor());
         assertThat(result.time()).isEqualTo(auditEntry.time());
+    }
+
+    @Test
+    void should_find_audit_entries_by_target_id() {
+        // given
+        var idFirst = UUID.randomUUID();
+        var idSecond = UUID.randomUUID();
+        var auditEntryFirst = TestAuditData.randomAuditEntry(idFirst);
+        var auditEntrySecond = TestAuditData.randomAuditEntry(idSecond);
+        var auditEntryThird = TestAuditData.randomAuditEntry(idSecond);
+        commandRepository.save(auditEntryFirst);
+        commandRepository.save(auditEntrySecond);
+        commandRepository.save(auditEntryThird);
+
+        // when
+        var result = sut.findByTargetId(idSecond);
+
+        // then
+        assertThat(result).hasSize(2);
+        assertThat(result.getFirst().target().targetId()).isEqualTo(idSecond);
+        assertThat(result.getLast().target().targetId()).isEqualTo(idSecond);
+
     }
 
     @Test
