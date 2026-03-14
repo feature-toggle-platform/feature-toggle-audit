@@ -2,21 +2,23 @@ package pl.feature.toggle.service.audit.infrastructure.in.kafka;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.kafka.autoconfigure.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JacksonJsonDeserializer;
+import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
 import org.springframework.util.backoff.FixedBackOff;
 import pl.feature.toggle.service.audit.application.port.in.AuditUseCase;
 import pl.feature.toggle.service.contracts.shared.IntegrationEvent;
@@ -52,9 +54,22 @@ class Config {
     }
 
     @Bean
+    ProducerFactory<String, IntegrationEvent> dltProducerFactory(KafkaProperties props) {
+        var cfg = new HashMap<>(props.buildProducerProperties());
+        cfg.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        cfg.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JacksonJsonSerializer.class);
+        return new DefaultKafkaProducerFactory<>(cfg);
+    }
+
+    @Bean
+    KafkaTemplate<String, IntegrationEvent> dltKafkaTemplate(ProducerFactory<String, IntegrationEvent> dltProducerFactory) {
+        return new KafkaTemplate<>(dltProducerFactory);
+    }
+
+    @Bean
     ConcurrentKafkaListenerContainerFactory<String, IntegrationEvent> kafkaListenerContainerFactory(
             ConsumerFactory<String, IntegrationEvent> consumerFactory,
-            KafkaTemplate<String, Object> kafkaTemplate
+            KafkaTemplate<String, IntegrationEvent> kafkaTemplate
     ) {
         var factory = new ConcurrentKafkaListenerContainerFactory<String, IntegrationEvent>();
         factory.setConsumerFactory(consumerFactory);
@@ -62,7 +77,7 @@ class Config {
                 .setAckMode(MANUAL_IMMEDIATE);
 
         var recoverer = new DeadLetterPublishingRecoverer(kafkaTemplate,
-                (record, ex) -> new TopicPartition(record.topic() + ".DLT", record.partition()));
+                (record, ex) -> new TopicPartition(record.topic() + ".DLT", -1));
         var backOff = new FixedBackOff(5000, 3);
         var errorHandler = new DefaultErrorHandler(recoverer, backOff);
         errorHandler.setRetryListeners((record, ex, deliveryAttempt) -> {

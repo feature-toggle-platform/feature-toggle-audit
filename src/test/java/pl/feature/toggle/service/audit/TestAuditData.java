@@ -131,7 +131,7 @@ public class TestAuditData {
     public static AuditEntry buildExpectedAuditEntry(FeatureToggleCreated event) {
         var actor = buildActor(event.metadata());
         var target = buildFeatureToggleTarget(event.id());
-        var context = AuditContext.forFeatureToggle(event.projectId(), event.environmentId(), event.metadata().correlationId());
+        var context = AuditContext.forFeatureToggle(event.environmentId(), event.metadata().correlationId());
         var changes = AuditChanges.empty();
         var time = AuditTime.from(event.metadata().occurredAt());
         return AuditEntry.build(AuditType.FEATURE_TOGGLE_CREATED, target, context, changes, actor, time);
@@ -140,7 +140,7 @@ public class TestAuditData {
     public static AuditEntry buildExpectedAuditEntry(FeatureToggleUpdated event) {
         var actor = buildActor(event.metadata());
         var target = buildFeatureToggleTarget(event.id());
-        var context = AuditContext.forFeatureToggle(event.projectId(), event.environmentId(), event.metadata().correlationId());
+        var context = AuditContext.forFeatureToggle(event.environmentId(), event.metadata().correlationId());
         var changes = buildChanges(event.changes());
         var time = AuditTime.from(event.metadata().occurredAt());
         return AuditEntry.build(AuditType.FEATURE_TOGGLE_UPDATED, target, context, changes, actor, time);
@@ -149,7 +149,7 @@ public class TestAuditData {
     public static AuditEntry buildExpectedAuditEntry(FeatureToggleStatusChanged event) {
         var actor = buildActor(event.metadata());
         var target = buildFeatureToggleTarget(event.id());
-        var context = AuditContext.forFeatureToggle(event.projectId(), event.environmentId(), event.metadata().correlationId());
+        var context = AuditContext.forFeatureToggle(event.environmentId(), event.metadata().correlationId());
         var changes = buildChanges(event.changes());
         var time = AuditTime.from(event.metadata().occurredAt());
         return AuditEntry.build(AuditType.FEATURE_TOGGLE_STATUS_CHANGED, target, context, changes, actor, time);
@@ -158,7 +158,7 @@ public class TestAuditData {
     public static AuditEntry buildExpectedAuditEntry(FeatureToggleValueChanged event) {
         var actor = buildActor(event.metadata());
         var target = buildFeatureToggleTarget(event.id());
-        var context = AuditContext.forFeatureToggle(event.projectId(), event.environmentId(), event.metadata().correlationId());
+        var context = AuditContext.forFeatureToggle(event.environmentId(), event.metadata().correlationId());
         var changes = buildChanges(event.changes());
         var time = AuditTime.from(event.metadata().occurredAt());
         return AuditEntry.build(AuditType.FEATURE_TOGGLE_VALUE_CHANGED, target, context, changes, actor, time);

@@ -88,7 +88,7 @@ final class AuditBuilder {
     static AuditEntry buildAuditFor(FeatureToggleCreated event) {
         var actor = buildActor(event.metadata());
         var target = buildFeatureToggleTarget(event.id());
-        var context = AuditContext.forFeatureToggle(event.projectId(), event.environmentId(), event.metadata().correlationId());
+        var context = AuditContext.forFeatureToggle(event.environmentId(), event.metadata().correlationId());
         var changes = AuditChanges.empty();
         var time = AuditTime.from(event.metadata().occurredAt());
         return AuditEntry.build(AuditType.FEATURE_TOGGLE_CREATED, target, context, changes, actor, time);
@@ -97,7 +97,7 @@ final class AuditBuilder {
     static AuditEntry buildAuditFor(FeatureToggleUpdated event) {
         var actor = buildActor(event.metadata());
         var target = buildFeatureToggleTarget(event.id());
-        var context = AuditContext.forFeatureToggle(event.projectId(), event.environmentId(), event.metadata().correlationId());
+        var context = AuditContext.forFeatureToggle(event.environmentId(), event.metadata().correlationId());
         var changes = buildChanges(event.changes());
         var time = AuditTime.from(event.metadata().occurredAt());
         return AuditEntry.build(AuditType.FEATURE_TOGGLE_UPDATED, target, context, changes, actor, time);
@@ -106,7 +106,7 @@ final class AuditBuilder {
     static AuditEntry buildAuditFor(FeatureToggleStatusChanged event) {
         var target = buildFeatureToggleTarget(event.id());
         var actor = buildActor(event.metadata());
-        var context = AuditContext.forFeatureToggle(event.projectId(), event.environmentId(), event.metadata().correlationId());
+        var context = AuditContext.forFeatureToggle(event.environmentId(), event.metadata().correlationId());
         var changes = buildChanges(event.changes());
         var time = AuditTime.from(event.metadata().occurredAt());
         return AuditEntry.build(AuditType.FEATURE_TOGGLE_STATUS_CHANGED, target, context, changes, actor, time);
@@ -116,7 +116,7 @@ final class AuditBuilder {
         var target = buildFeatureToggleTarget(event.id());
         var actor = buildActor(event.metadata());
         var changes = buildChanges(event.changes());
-        var context = AuditContext.forFeatureToggle(event.projectId(), event.environmentId(), event.metadata().correlationId());
+        var context = AuditContext.forFeatureToggle(event.environmentId(), event.metadata().correlationId());
         var time = AuditTime.from(event.metadata().occurredAt());
         return AuditEntry.build(AuditType.FEATURE_TOGGLE_VALUE_CHANGED, target, context, changes, actor, time);
     }

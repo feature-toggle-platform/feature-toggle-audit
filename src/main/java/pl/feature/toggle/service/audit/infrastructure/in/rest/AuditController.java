@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.feature.toggle.service.audit.application.port.out.AuditQueryRepository;
-import pl.feature.toggle.service.audit.domain.AuditEntryId;
 import pl.feature.toggle.service.audit.infrastructure.in.rest.view.AuditView;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/rest/api/audit")
@@ -17,21 +19,27 @@ class AuditController {
     private final AuditQueryRepository auditQueryRepository;
 
     @GetMapping("/projects/{projectId}")
-    AuditView getAuditForProject(@PathVariable String projectId) {
-        var auditEntry = auditQueryRepository.findById(AuditEntryId.of(projectId));
-        return AuditView.from(auditEntry);
+    List<AuditView> getAuditForProject(@PathVariable String projectId) {
+        var auditEntries = auditQueryRepository.findByTargetId(UUID.fromString(projectId));
+        return auditEntries.stream()
+                .map(AuditView::from)
+                .toList();
     }
 
     @GetMapping("/environments/{environmentId}")
-    AuditView getAuditForEnvironment(@PathVariable String environmentId) {
-        var auditEntry = auditQueryRepository.findById(AuditEntryId.of(environmentId));
-        return AuditView.from(auditEntry);
+    List<AuditView> getAuditForEnvironment(@PathVariable String environmentId) {
+        var auditEntries = auditQueryRepository.findByTargetId(UUID.fromString(environmentId));
+        return auditEntries.stream()
+                .map(AuditView::from)
+                .toList();
     }
 
     @GetMapping("/feature-toggles/{featureToggleId}")
-    AuditView getAuditForFeatureToggle(@PathVariable String featureToggleId) {
-        var auditEntry = auditQueryRepository.findById(AuditEntryId.of(featureToggleId));
-        return AuditView.from(auditEntry);
+    List<AuditView> getAuditForFeatureToggle(@PathVariable String featureToggleId) {
+        var auditEntries = auditQueryRepository.findByTargetId(UUID.fromString(featureToggleId));
+        return auditEntries.stream()
+                .map(AuditView::from)
+                .toList();
     }
 
 }
