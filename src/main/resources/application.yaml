@@ -12,5 +12,9 @@ topics:
   feature-toggle-events: feature-toggle-events
   feature-toggle-configuration-events: feature-toggle-configuration-events
 
+
+event-processing:
+  mode: non-transactional
+
 server:
   port: 8084

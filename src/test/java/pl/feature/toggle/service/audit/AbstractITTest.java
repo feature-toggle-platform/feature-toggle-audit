@@ -27,9 +27,13 @@ public abstract class AbstractITTest {
     }
 
     @AfterEach
-    void tearDown(){
+    void tearDown() {
         mongoTemplate.getDb()
                 .listCollectionNames()
                 .forEach(mongoTemplate::dropCollection);
+    }
+
+    protected long countProcessedEvents() {
+        return mongoTemplate.getCollection("processed_events").countDocuments();
     }
 }

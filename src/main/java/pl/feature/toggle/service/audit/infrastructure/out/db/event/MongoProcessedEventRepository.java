@@ -3,20 +3,61 @@ package pl.feature.toggle.service.audit.infrastructure.out.db.event;
 import com.mongodb.DuplicateKeyException;
 import lombok.AllArgsConstructor;
 import pl.feature.toggle.service.contracts.shared.EventId;
-import pl.feature.toggle.service.event.processing.api.ProcessedEventRepository;
+import pl.feature.toggle.service.event.processing.api.NonTransactionalProcessedEventRepository;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Optional;
 
 @AllArgsConstructor
-class MongoProcessedEventRepository implements ProcessedEventRepository {
+class MongoProcessedEventRepository implements NonTransactionalProcessedEventRepository {
+
+    private static final Duration PROCESSING_TIMEOUT = Duration.ofMinutes(5);
 
     private final SpringDataProcessedEventRepository repository;
 
     @Override
-    public boolean tryMarkProcessed(EventId eventId) {
-        try {
-            repository.insert(new ProcessedEventDocument(eventId.id()));
+    public boolean tryStartProcessing(EventId eventId) {
+        Optional<ProcessedEventDocument> existing = repository.findById(eventId.id());
+
+        if (existing.isEmpty()) {
+            repository.insert(new ProcessedEventDocument(
+                    eventId.id(),
+                    ProcessedEventDocument.Status.PROCESSING,
+                    Instant.now()
+            ));
             return true;
-        } catch (DuplicateKeyException exception) {
+        }
+
+        var doc = existing.get();
+        if (doc.getStatus() == ProcessedEventDocument.Status.PROCESSED) {
             return false;
         }
+
+        var now = Instant.now();
+        if (doc.getStartedAt().plus(PROCESSING_TIMEOUT).isBefore(now)) {
+            repository.save(new ProcessedEventDocument(
+                    eventId.id(),
+                    ProcessedEventDocument.Status.PROCESSING,
+                    now
+            ));
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void markProcessed(EventId eventId) {
+        repository.save(new ProcessedEventDocument(
+                eventId.id(),
+                ProcessedEventDocument.Status.PROCESSED,
+                Instant.now()
+        ));
+    }
+
+    @Override
+    public void clearProcessing(EventId eventId) {
+        repository.deleteById(eventId.id());
     }
 }

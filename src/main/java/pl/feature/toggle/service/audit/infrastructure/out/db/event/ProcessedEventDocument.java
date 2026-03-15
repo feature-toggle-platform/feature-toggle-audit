@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Document("processed_events")
@@ -14,5 +15,12 @@ class ProcessedEventDocument {
 
     @Id
     private final UUID id;
+    private final Status status;
+    private final Instant startedAt;
+
+    enum Status {
+        PROCESSING,
+        PROCESSED
+    }
 
 }
