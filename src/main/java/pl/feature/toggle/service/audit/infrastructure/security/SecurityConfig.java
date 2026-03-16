@@ -1,12 +1,10 @@
 package pl.feature.toggle.service.audit.infrastructure.security;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.context.annotation.RequestScope;
 import pl.feature.toggle.service.model.security.actor.ActorProvider;
 import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 
@@ -19,9 +17,8 @@ class SecurityConfig {
     }
 
     @Bean
-    @RequestScope
-    CorrelationProvider correlationProvider(HttpServletRequest request) {
-        return new HttpCorrelationProvider(request);
+    CorrelationProvider correlationProvider() {
+        return new MDCCorrelationProvider();
     }
 
     @Bean
