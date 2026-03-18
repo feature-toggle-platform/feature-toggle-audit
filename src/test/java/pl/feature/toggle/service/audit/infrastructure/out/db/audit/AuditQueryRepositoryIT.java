@@ -7,6 +7,7 @@ import pl.feature.toggle.service.audit.TestAuditData;
 import pl.feature.toggle.service.audit.application.port.out.AuditCommandRepository;
 import pl.feature.toggle.service.audit.application.port.out.AuditQueryRepository;
 import pl.feature.toggle.service.audit.domain.AuditEntryId;
+import pl.feature.toggle.service.audit.domain.exception.AuditEntryNotFoundException;
 
 import java.util.UUID;
 
@@ -70,7 +71,6 @@ class AuditQueryRepositoryIT extends AbstractITTest {
 
         // when / then
         assertThatThrownBy(() -> sut.findById(notExistingId))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Audit entry not found");
+                .isInstanceOf(AuditEntryNotFoundException.class);
     }
 }
