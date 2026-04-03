@@ -8,10 +8,10 @@
 		<version>4.0.0</version>
 		<relativePath/>
 	</parent>
-	<groupId>pl.feature.toggle.service</groupId>
-	<artifactId>feature-toggle-audit</artifactId>
+	<groupId>com.configly</groupId>
+	<artifactId>audit</artifactId>
 	<version>${revision}</version>
-	<name>feature-toggle-audit</name>
+	<name>configly-audit</name>
 	<properties>
 		<revision>1.0.0-SNAPSHOT</revision>
 		<contracts.version>1.0.0-SNAPSHOT</contracts.version>
@@ -45,13 +45,13 @@
 			<artifactId>spring-boot-starter-webmvc</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>pl.feature.toggle.service</groupId>
-			<artifactId>feature-toggle-contracts</artifactId>
+			<groupId>com.configly</groupId>
+			<artifactId>contracts</artifactId>
 			<version>${contracts.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>pl.feature.toggle.service</groupId>
-			<artifactId>feature-toggle-event-processing</artifactId>
+			<groupId>com.configly</groupId>
+			<artifactId>event-processing</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -90,8 +90,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>pl.feature.toggle.service</groupId>
-			<artifactId>feature-toggle-shared-web</artifactId>
+			<groupId>com.configly</groupId>
+			<artifactId>shared-web</artifactId>
 			<version>${shared-web.version}</version>
 		</dependency>
 		<dependency>
@@ -115,8 +115,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>pl.feature.toggle.service</groupId>
-			<artifactId>feature-toggle-contracts</artifactId>
+			<groupId>com.configly</groupId>
+			<artifactId>contracts</artifactId>
 			<version>${contracts.version}</version>
 			<classifier>tests</classifier>
 			<scope>test</scope>
