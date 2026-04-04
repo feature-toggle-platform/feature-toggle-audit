@@ -46,12 +46,12 @@
 		</dependency>
 		<dependency>
 			<groupId>com.configly</groupId>
-			<artifactId>configly-contracts</artifactId>
+			<artifactId>contracts</artifactId>
 			<version>${contracts.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.configly</groupId>
-			<artifactId>configly-event-processing</artifactId>
+			<artifactId>event-processing</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -91,7 +91,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.configly</groupId>
-			<artifactId>configly-shared-web</artifactId>
+			<artifactId>shared-web</artifactId>
 			<version>${shared-web.version}</version>
 		</dependency>
 		<dependency>
@@ -116,7 +116,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.configly</groupId>
-			<artifactId>configly-contracts</artifactId>
+			<artifactId>contracts</artifactId>
 			<version>${contracts.version}</version>
 			<classifier>tests</classifier>
 			<scope>test</scope>
