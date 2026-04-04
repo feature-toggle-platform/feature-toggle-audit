@@ -8,6 +8,7 @@ import com.configly.audit.application.port.out.AuditQueryRepository;
 @Configuration("auditConfig")
 class Config {
 
+
     @Bean
     AuditCommandRepository auditCommandRepository(SpringDataAuditEntryMongoRepository mongoRepository) {
         return new MongoAuditCommandRepository(mongoRepository);
