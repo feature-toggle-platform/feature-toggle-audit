@@ -16,7 +16,7 @@
 		<revision>1.0.0-SNAPSHOT</revision>
 		<contracts.version>1.0.0-SNAPSHOT</contracts.version>
 		<event.processing.version>1.0.0-SNAPSHOT</event.processing.version>
-		<shared-web.version>1.0.0-SNAPSHOT</shared-web.version>
+		<web.version>1.0.0-SNAPSHOT</web.version>
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
@@ -91,8 +91,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.configly</groupId>
-			<artifactId>shared-web</artifactId>
-			<version>${shared-web.version}</version>
+			<artifactId>web</artifactId>
+			<version>${web.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
