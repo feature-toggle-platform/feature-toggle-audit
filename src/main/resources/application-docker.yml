@@ -1,0 +1,6 @@
+spring:
+  mongodb:
+    uri: mongodb://configly-audit-db:27017/configly-audit?uuidRepresentation=standard
+  kafka:
+    bootstrap-servers: kafka:29092
+

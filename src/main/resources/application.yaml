@@ -1,16 +1,16 @@
 spring:
   application:
-    name: feature-toggle-audit
+    name: configly-audit
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
-      group-id: feature-toggle-audit
+      group-id: configly-audit
   mongodb:
-    uri: mongodb://localhost:27017/feature-toggle-audit?uuidRepresentation=standard
+    uri: mongodb://localhost:27017/configly-audit?uuidRepresentation=standard
 
 topics:
-  feature-toggle-events: feature-toggle-events
-  feature-toggle-configuration-events: feature-toggle-configuration-events
+  configly-toggle-events: configly-toggle-events
+  configly-structure-events: configly-structure-events
 
 
 event-processing:

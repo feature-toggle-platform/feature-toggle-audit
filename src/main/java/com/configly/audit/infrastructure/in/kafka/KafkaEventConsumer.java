@@ -21,7 +21,7 @@ import com.configly.event.processing.api.EventProcessor;
 
 @Slf4j
 @AllArgsConstructor
-@KafkaListener(topics = {"${topics.feature-toggle-configuration-events}", "${topics.feature-toggle-events}"})
+@KafkaListener(topics = {"${topics.configly-structure-events}", "${topics.configly-toggle-events}"})
 class KafkaEventConsumer {
 
     private final EventProcessor eventProcessor;
